@@ -1,0 +1,40 @@
+import pyttsx3
+import speech_recognition as sr #pip install speechRecognition
+import datetime
+import os
+import webbrowser
+import wikipedia
+muskan = pyttsx3.init('sapi5')
+voices = muskan.getProperty('voices')
+muskan.setProperty('voice',voices[1].id)
+def speak(audio):
+    muskan.say(audio)
+    muskan.runAndWait()
+def greetingMessage():
+    hour = int(datetime.datetime.now().hour)
+    if hour >= 0 and hour < 12:
+        speak("GOOD MORNING ")
+    elif hour >= 12 and hour < 17:
+        speak("GOOD AFTERNOON")
+    elif hour >= 17 and hour < 21:
+        speak("GOOD EVENING")
+    else:
+        speak("GOOD NIGHT")
+    speak("HELLO I AM MUSKAN YOUR TECHNICAL ASSITANT,TELL ME HOW CAN I HELP YOU")
+def order():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("I AM LISTENING...")
+        speak("I AM LISTENING")
+        r.pause_threshold = 1 #it will wait for user
+        audio = r.listen(source)
+    try:
+        print("Recognizing....")
+        speak("Recognizing")
+        query = r.recognize_google(audio, language = "En-in")
+        print(f"you said{query}")
+    except Exception as e:
+        print("SORRY I COULDNOT HEAR,PLEASE SAY AGAIN")
+        speak("SORRY I COULDNOT HEAR,PLEASE SAY AGAIN")
+        return "NONE"
+    return query
